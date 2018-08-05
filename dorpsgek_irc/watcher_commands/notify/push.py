@@ -7,20 +7,21 @@ async def push(event, ws, irc):
     channels = event.data["userdata"]
     if not isinstance(channels, list):
         channels = [channels]
-    channels = ["#%s" % c for c in channels]
+    channels = [f"#{c}" for c in channels]
 
     autojoins = irc.get_plugin("irc3.plugins.autojoins.AutoJoins")
+
+    commit_count = len(event.data["commits"])
 
     for channel in channels:
         # Try to join the channel before we send a message
         if channel not in autojoins.joined:
             autojoins.join(channel)
 
-        irc.privmsg(channel, "[%s] Push to %s by %s:" % (
-            event.data["repository_name"],
-            event.data["branch"],
-            event.data["pusher"],
-        ))
+        irc.privmsg(channel,
+                    f"[{event.data['repository_name']}] "
+                    f"{event.data['user']} pushed {commit_count} commits to {event.data['branch']}:"
+        )
         for commit in event.data["commits"]:
-            irc.privmsg(channel, "  - %s (by %s)" % (commit["message"], commit["author"]))
+            irc.privmsg(channel, f"  - {commit['message']} (by {commit['author']})")
         irc.privmsg(channel, event.data["url"])
