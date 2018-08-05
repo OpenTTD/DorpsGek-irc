@@ -15,6 +15,8 @@ async def pull_request(event, ws, irc):
         message = f"{event.data['user']} opened pull request #{event.data['pull_id']}: {event.data['title']}"
     elif event.data["action"] == "closed":
         message = f"{event.data['user']} closed pull request #{event.data['pull_id']}: {event.data['title']}"
+    elif event.data["action"] == "merged":
+        message = f"{event.data['user']} merged pull request #{event.data['pull_id']}: {event.data['title']}"
     elif event.data["action"] == "synchronize":
         message = f"{event.data['user']} updated pull request #{event.data['pull_id']}: {event.data['title']}"
     elif event.data["action"] == "reopened":
