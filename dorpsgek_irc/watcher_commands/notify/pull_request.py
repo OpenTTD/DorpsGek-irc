@@ -26,6 +26,18 @@ async def pull_request(event, ws, irc):
         message = f"{event.data['user']} reopened pull request #{event.data['pull_id']}: {event.data['title']}"
     elif event.data["action"] == "comment":
         message = f"{event.data['user']} commented on pull request #{event.data['pull_id']}: {event.data['title']}"
+    elif event.data["action"] == "dismissed":
+        message = f"{event.data['user']} dismissed a review for pull request #{event.data['pull_id']}:" \
+                  f" {event.data['title']}"
+    elif event.data["action"] == "approved":
+        message = f"{event.data['user']} approved pull request #{event.data['pull_id']}: {event.data['title']}"
+    elif event.data["action"] == "changes_requested":
+        message = f"{event.data['user']} requested changes for pull request #{event.data['pull_id']}:" \
+                  f" {event.data['title']}"
+    elif event.data["action"] == "commented":
+        message = f"{event.data['user']} commented on pull request #{event.data['pull_id']}: {event.data['title']}"
+    else:
+        return
 
     for channel in channels:
         # Try to join the channel before we send a message
