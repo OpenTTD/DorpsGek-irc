@@ -1,4 +1,7 @@
-from dorpsgek_irc import watcher
+from dorpsgek_irc import (
+    watcher,
+    url,
+)
 
 
 @watcher.register("notify.pull_request")
@@ -29,4 +32,5 @@ async def pull_request(event, ws, irc):
         if channel not in autojoins.joined:
             autojoins.join(channel)
 
-        irc.privmsg(channel, f"[{event.data['repository_name']}] {message} {event.data['url']}")
+        shortened_url = await url.shorten(event.data["url"])
+        irc.privmsg(channel, f"[{event.data['repository_name']}] {message} {shortened_url}")
