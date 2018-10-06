@@ -1,4 +1,7 @@
-from dorpsgek_irc import watcher
+from dorpsgek_irc import (
+    watcher,
+    url,
+)
 
 
 @watcher.register("notify.push")
@@ -24,4 +27,4 @@ async def push(event, ws, irc):
                     )
         for commit in event.data["commits"]:
             irc.privmsg(channel, f"  - {commit['message']} (by {commit['author']})")
-        irc.privmsg(channel, event.data["url"])
+        irc.privmsg(channel, await url.shorten(event.data["url"]))
