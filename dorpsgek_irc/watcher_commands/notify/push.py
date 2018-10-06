@@ -21,7 +21,7 @@ async def push(event, ws, irc):
         irc.privmsg(channel,
                     f"[{event.data['repository_name']}] "
                     f"{event.data['user']} pushed {commit_count} commits to {event.data['branch']}:"
-        )
+                    )
         for commit in event.data["commits"]:
             irc.privmsg(channel, f"  - {commit['message']} (by {commit['author']})")
         irc.privmsg(channel, event.data["url"])
